@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jrspiker/travis-ci-piezas.svg?branch=master)](https://travis-ci.org/jrspiker/travis-ci-piezas)
+
 # Piezas
 
 ## Associated Enumerated Types
