@@ -15,7 +15,7 @@ before_install:
 
 script:
   - make clean
-  - ./configure --enable-gcov && make
+  - make
   - ./PiezasTest
 
 after_success:
