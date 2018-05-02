@@ -66,29 +66,6 @@ void Piezas::reset() {
 **/ 
 Piece Piezas::dropPiece(int column) {
 
-  if (column < 0 || column > BOARD_COLS-1) {
-
-    return Invalid;
-
-  }
-
-  else if (board[0][column] != Blank) {
-
-    return Blank;
-
-  }
-
-  else {
-
-    for (int i=0; i < BOARD_ROWS; i++) {
-      if (board[i][column] == Blank) {
-
-        board[i][column] = turn;
-
-      }
-    }
-  }
-
   Piece placed = turn;
   if (turn == X) {
 
@@ -102,7 +79,25 @@ Piece Piezas::dropPiece(int column) {
 
   }
 
-  return placed;
+  if (column < 0 || column > BOARD_COLS-1) {
+
+    return Invalid;
+
+  }
+
+  else {
+
+    for (int i=0; i < BOARD_ROWS; i++) {
+      if (board[i][column] == Blank) {
+
+        board[i][column] = placed;
+        return placed;
+
+      }
+    }
+  }
+
+  return Blank;
 
 }
 
@@ -136,10 +131,12 @@ Piece Piezas::pieceAt(int row, int column) {
 **/
 Piece Piezas::gameState() {
 
-  int x_tally = 0, num_x = 0;
-  int o_tally = 0, num_o = 0;
+  int x_tally = 0;
+  int o_tally = 0;
 
   for (int i=0; i < BOARD_ROWS; i++) {
+
+    int num_x = 0, num_o = 0;
     for (int j=0; j < BOARD_COLS; j++) {
 
       if (board[i][j] == Blank) {
@@ -180,10 +177,10 @@ Piece Piezas::gameState() {
     }
   }
 
-  num_x = 0;
-  num_o = 0;
 
   for (int j=0; j < BOARD_COLS; j++) {
+
+    int num_x = 0, num_o = 0;
     for (int i=1; i < BOARD_ROWS; i++) {
 
 
