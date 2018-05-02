@@ -20,16 +20,40 @@
  * Constructor sets an empty board (default 3 rows, 4 columns) and 
  * specifies it is X's turn first
 **/
-Piezas::Piezas()
-{
+Piezas::Piezas() {
+
+  turn = X;
+
+  board.resize(BOARD_ROWS);
+  for (int i=0; i < BOARD_ROWS; i++) {
+
+    board[i].resize(BOARD_COLS);
+
+  }
+
+
+  for (int i=0; i < BOARD_ROWS; i++) {
+    for (int j=0; j < BOARD_COLS; j++) {
+
+      board[i][j] = Blank;
+
+    }
+  }
 }
 
 /**
  * Resets each board location to the Blank Piece value, with a board of the
  * same size as previously specified
 **/
-void Piezas::reset()
-{
+void Piezas::reset() {
+
+  for (int i=0; i < BOARD_ROWS; i++) {
+    for (int j=0; j < BOARD_COLS; j++) {
+
+      board[i][j] = Blank;
+    
+    }
+  }
 }
 
 /**
@@ -40,18 +64,65 @@ void Piezas::reset()
  * Out of bounds coordinates return the Piece Invalid value
  * Trying to drop a piece where it cannot be placed loses the player's turn
 **/ 
-Piece Piezas::dropPiece(int column)
-{
+Piece Piezas::dropPiece(int column) {
+
+  if (column < 0 || column > BOARD_COLS-1) {
+
+    return Invalid;
+
+  }
+
+  else if (board[0][column] != Blank) {
+
     return Blank;
+
+  }
+
+  else {
+
+    for (int i=0; i < BOARD_ROWS; i++) {
+      if (board[i][column] == Blank) {
+
+        board[i][column] = turn;
+
+      }
+    }
+  }
+
+  Piece placed = turn;
+  if (turn == X) {
+
+    turn = O;
+
+  }
+
+  else {
+
+    turn = X;
+
+  }
+
+  return placed;
+
 }
 
 /**
  * Returns what piece is at the provided coordinates, or Blank if there
  * are no pieces there, or Invalid if the coordinates are out of bounds
 **/
-Piece Piezas::pieceAt(int row, int column)
-{
-    return Blank;
+Piece Piezas::pieceAt(int row, int column) {
+
+  if (row < 0 || row > BOARD_ROWS-1 || column < 0 || column > BOARD_COLS-1) {
+
+    return Invalid;
+
+  }
+
+  else {
+
+    return board[row][column];
+
+  }
 }
 
 /**
@@ -63,7 +134,103 @@ Piece Piezas::pieceAt(int row, int column)
  * or horizontally. If both X's and O's have the same max number of pieces in a
  * line, it is a tie.
 **/
-Piece Piezas::gameState()
-{
+Piece Piezas::gameState() {
+
+  int x_tally = 0, num_x = 0;
+  int o_tally = 0, num_o = 0;
+
+  for (int i=0; i < BOARD_ROWS; i++) {
+    for (int j=0; j < BOARD_COLS; j++) {
+
+      if (board[i][j] == Blank) {
+
+        return Invalid;
+
+      }
+
+      else {
+
+        if (j > 0 && (board[i][j] == board[i][j-1])) {
+
+          if (board[i][j] == X) {
+
+            num_x++;
+
+          }
+
+          else {
+
+            num_o++;
+
+          }
+        }
+      }
+    }
+
+    if (num_x > x_tally) {
+
+      x_tally = num_x;
+
+    }
+
+    if (num_o > o_tally) {
+
+      o_tally = num_o;
+
+    }
+  }
+
+  num_x = 0;
+  num_o = 0;
+
+  for (int j=0; j < BOARD_COLS; j++) {
+    for (int i=1; i < BOARD_ROWS; i++) {
+
+
+      if (board[i][j] == board[i-1][j]) {
+
+        if (board[i][j] == X) {
+
+          num_x++;
+
+        }
+
+        else {
+
+          num_o++;
+
+        }
+      }
+    }
+
+    if (num_x > x_tally) {
+
+      x_tally = num_x;
+
+    }
+
+    if (num_o > o_tally) {
+
+      o_tally = num_o;
+
+    }
+  }
+  
+  if (x_tally == o_tally) {
+
     return Blank;
+
+  }
+
+  else if (x_tally > o_tally) {
+
+    return X;
+
+  }
+
+  else {
+
+    return O;
+
+  }
 }
