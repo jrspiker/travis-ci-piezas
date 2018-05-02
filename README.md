@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/jrspiker/travis-ci-piezas.svg?branch=master)](https://travis-ci.org/jrspiker/travis-ci-piezas)
+[![Coverage Status](https://coveralls.io/repos/github/jrspiker/travis-ci-piezas/badge.svg?branch=master)](https://coveralls.io/github/jrspiker/travis-ci-piezas?branch=master)
+
 
 # Piezas
 
